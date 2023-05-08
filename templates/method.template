@@ -1,0 +1,17 @@
+static PyObject* ${METHOD}_wrapper (
+    PyObject*,
+    PyObject * i_args)
+{
+    const char* json_str;
+    if (!PyArg_ParseTuple(i_args, "s", &json_str))
+    {
+        Py_RETURN_FALSE;
+    }
+    std::string js = json_str;
+    json args = json::parse(js);
+
+    $MAP_ARGS
+
+    json ret = ${CLASS_NAME}_Handler::get_instance().${METHOD}(${ARGS});
+    return Py_BuildValue("s", ret.dump().c_str());
+}

@@ -1,0 +1,4 @@
+static PyMethodDef METHODS[] = {
+    $METHODS
+    {NULL, NULL, 0, NULL}
+};

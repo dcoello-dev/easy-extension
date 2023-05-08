@@ -1,0 +1,41 @@
+static struct PyModuleDef ${NAME}_module = {
+    PyModuleDef_HEAD_INIT, "${NAME}",
+    "",
+    -1,
+    METHODS,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+};
+PyMODINIT_FUNC PyInit_${NAME}(
+    void)
+{
+    return PyModule_Create(&${NAME}_module);
+}
+int main(
+    int,
+    char* argv[])
+{
+    wchar_t* program = Py_DecodeLocale(argv[0], NULL);
+    if (program == NULL)
+    {
+        fprintf(stderr, "Fatal error: cannot decode argv[0]\n");
+        exit(1);
+    }
+    if (PyImport_AppendInittab("${NAME}", PyInit_${NAME}) == -1)
+    {
+        fprintf(stderr, "Error: could not extend in-built modules \n");
+        exit(1);
+    }
+    Py_SetProgramName(program);
+    Py_Initialize();
+    PyObject* pmodule = PyImport_ImportModule("${NAME}");
+    if (!pmodule)
+    {
+        PyErr_Print();
+        fprintf(stderr, "Error: could not import module 'spamn");
+    }
+    PyMem_RawFree(program);
+    return 0;
+}
